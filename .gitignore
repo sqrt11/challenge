@@ -7,4 +7,6 @@ dist
 .env
 *.env
 backend/.env
+backend/.idea
+.idea
 frontend/.env
