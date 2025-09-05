@@ -1,9 +1,8 @@
 node_modules
 hashPwd.js
-.env
-.DS_Store
 npm-debug.log
 dist
 .vscode
 *.log
-*.env
+*/.env
+*/*.env
