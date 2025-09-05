@@ -4,5 +4,7 @@ npm-debug.log
 dist
 .vscode
 *.log
-*/.env
-*/*.env
+.env
+*.env
+backend/.env
+frontend/.env
