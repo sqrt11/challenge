@@ -8,24 +8,30 @@ const getRoleId = async (roleName) => {
 }
 
 const findAllStudents = async (payload) => {
+    console.log(payload);
     const { name, className, section, roll } = payload;
     let query = `
         SELECT
             t1.id,
             t1.name,
             t1.email,
+            t3.class_name,
+            t3.section_name,
+            t3.roll,
             t1.last_login AS "lastLogin",
             t1.is_active AS "systemAccess"
         FROM users t1
-        LEFT JOIN user_profiles t3 ON t1.id = t3.user_id
+        LEFT JOIN user_profiles t3 ON t1.id = t3.user_id        
+		LEFT JOIN classes t4 ON t4.name = t3.class_name
+		LEFT JOIN sections t5 ON t5.name = t3.section_name
         WHERE t1.role_id = 3`;
     let queryParams = [];
     if (name) {
-        query += ` AND t1.name = $${queryParams.length + 1}`;
-        queryParams.push(name);
+        query += ` AND t1.name ilike $${queryParams.length + 1}`;
+        queryParams.push(`%${name}%`);
     }
     if (className) {
-        query += ` AND t3.class_name = $${queryParams.length + 1}`;
+        query += ` AND t4.id = $${queryParams.length + 1}`;
         queryParams.push(className);
     }
     if (section) {

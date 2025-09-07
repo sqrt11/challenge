@@ -10,3 +10,4 @@ backend/.env
 backend/.idea
 .idea
 frontend/.env
+frontend/.husky

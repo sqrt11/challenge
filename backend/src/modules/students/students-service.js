@@ -10,10 +10,11 @@ const checkStudentId = async (id) => {
 }
 
 const getAllStudents = async (payload) => {
+
     const students = await findAllStudents(payload);
-    if (students.length <= 0) {
-        throw new ApiError(404, "Students not found");
-    }
+    //if (students.length <= 0) {
+    //    throw new ApiError(404, "Students not found");
+    //}
 
     return students;
 }
@@ -30,6 +31,8 @@ const getStudentDetail = async (id) => {
 }
 
 const addNewStudent = async (payload) => {
+    console.log("service addNewStudent");
+    console.log(payload);
     const ADD_STUDENT_AND_EMAIL_SEND_SUCCESS = "Student added and verification email sent successfully.";
     const ADD_STUDENT_AND_BUT_EMAIL_SEND_FAIL = "Student added, but failed to send verification email.";
     try {
@@ -39,7 +42,7 @@ const addNewStudent = async (payload) => {
         }
 
         try {
-            await sendAccountVerificationEmail({ userId: result.userId, userEmail: payload.email });
+            //await sendAccountVerificationEmail({ userId: result.userId, userEmail: payload.email });
             return { message: ADD_STUDENT_AND_EMAIL_SEND_SUCCESS };
         } catch (error) {
             return { message: ADD_STUDENT_AND_BUT_EMAIL_SEND_FAIL }

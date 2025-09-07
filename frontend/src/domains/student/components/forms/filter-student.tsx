@@ -33,8 +33,10 @@ export const FilterStudent: React.FC<FilterStudentProps> = ({ methods, searchStu
     const selectedSections = classes.find((cl) => cl.id === Number(selectedClass));
     if (selectedSections) {
       setSections(selectedSections.sections.length > 0 ? selectedSections.sections.split(',') : []);
+      methods.setValue('section', '');
     } else {
       setSections([]);
+      methods.setValue('section', '');
     }
   };
 
