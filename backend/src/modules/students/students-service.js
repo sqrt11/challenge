@@ -31,8 +31,7 @@ const getStudentDetail = async (id) => {
 }
 
 const addNewStudent = async (payload) => {
-    console.log("service addNewStudent");
-    console.log(payload);
+
     const ADD_STUDENT_AND_EMAIL_SEND_SUCCESS = "Student added and verification email sent successfully.";
     const ADD_STUDENT_AND_BUT_EMAIL_SEND_FAIL = "Student added, but failed to send verification email.";
     try {
@@ -40,7 +39,6 @@ const addNewStudent = async (payload) => {
         if (!result.status) {
             throw new ApiError(500, result.message);
         }
-
         try {
             //await sendAccountVerificationEmail({ userId: result.userId, userEmail: payload.email });
             return { message: ADD_STUDENT_AND_EMAIL_SEND_SUCCESS };
