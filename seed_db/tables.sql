@@ -295,10 +295,18 @@ $BODY$;
 
 
 --student add/update
-DROP FUNCTION IF EXISTS student_add_update(JSONB);
-CREATE OR REPLACE FUNCTION public.student_add_update(data jsonb)
-RETURNS TABLE("userId" INTEGER, status boolean, message TEXT, description TEXT) 
-LANGUAGE 'plpgsql'
+-- FUNCTION: public.student_add_update(jsonb)
+
+DROP FUNCTION IF EXISTS public.student_add_update(jsonb);
+
+CREATE OR REPLACE FUNCTION public.student_add_update(
+	data jsonb)
+    RETURNS TABLE("userId" integer, status boolean, message text, description text) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
 AS $BODY$
 
 DECLARE
@@ -328,7 +336,7 @@ DECLARE
     _roll INTEGER;
 BEGIN
     _roleId = 3;
-    _userId := COALESCE((data ->>'userId')::INTEGER, NULL);
+    _userId := COALESCE((data ->>'id')::INTEGER, NULL);
     _name := COALESCE(data->>'name', NULL);
     _gender := COALESCE(data->>'gender', NULL);
     _phone := COALESCE(data->>'phone', NULL);
@@ -347,8 +355,8 @@ BEGIN
     _className := COALESCE(data->>'class', NULL);
     _sectionName := COALESCE(data->>'section', NULL);
     _admissionDt := COALESCE((data->>'admissionDate')::DATE, NULL);
-    _roll := COALESCE((data->>'roll')::INTEGER, NULL);
-
+    _roll := COALESCE((data->>'roll')::INTEGER, NULL);	
+	
     IF _userId IS NULL THEN
         _operationType := 'add';
     ELSE
@@ -384,7 +392,6 @@ BEGIN
             SELECT _userId, true, 'Student added successfully', NULL;
         RETURN;
     END IF;
-
 
     --update user tables
     UPDATE users
@@ -425,9 +432,11 @@ EXCEPTION
 END;
 $BODY$;
 
+-- dashboard data
+-- FUNCTION: public.get_dashboard_data(INTEGER)
 
 DROP FUNCTION IF EXISTS public.get_dashboard_data(INTEGER);
-CREATE OR REPLACE FUNCTION get_dashboard_data(_user_id INTEGER)
+CREATE OR REPLACE FUNCTION public.get_dashboard_data(_user_id INTEGER)
 RETURNS JSONB
 LANGUAGE plpgsql
 AS $BODY$
